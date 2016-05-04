@@ -16,17 +16,13 @@ namespace SimQLTask
 				Console.WriteLine(result);
 		}
 
-		public static IEnumerable<double> ExecuteQueries(string json)
+		public static IEnumerable<string> ExecuteQueries(string json)
 		{
 			var jObject = JObject.Parse(json);
-			var data = (JArray)jObject["data"];
+			var data = (JObject)jObject["data"];
 			var queries = jObject["queries"].ToObject<string[]>();
-			return queries.Select(q => ExecuteQuery(q, data));
-		}
-
-		private static double ExecuteQuery(string query, JArray data)
-		{
-			return 0; //TODO
+			// TODO
+			return queries.Select(q => "TODO");
 		}
 	}
 }

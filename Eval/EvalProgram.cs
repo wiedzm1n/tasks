@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using checker.Eval.Solution;
+using System;
 
 namespace EvalTask
 {
@@ -11,17 +7,9 @@ namespace EvalTask
 	{
 		static void Main(string[] args)
 		{
-			while (true)
-			{
-				var line = Console.ReadLine();
-				if (line == null) break;
-				Console.WriteLine(Eval(line).ToString(CultureInfo.InvariantCulture));
-			}
-		}
-
-		private static double Eval(string expression)
-		{
-			return 0; //TODO
+			string input = Console.In.ReadToEnd();
+			string output = "TODO";
+			Console.WriteLine(output);
 		}
 	}
 }

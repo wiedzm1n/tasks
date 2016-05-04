@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Xml.Linq;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
+﻿using Newtonsoft.Json.Linq;
+using System;
 
 namespace JsonConversion
 {
@@ -11,33 +7,11 @@ namespace JsonConversion
 	{
 		static void Main()
 		{
-			var json = Console.In.ReadToEnd();
-			var v3 = ConvertToV3(json);
+			string json = Console.In.ReadToEnd();
+			JObject v2 = JObject.Parse(json);
+			//...
+			var v3 = "{ 'version':'3', 'products': 'TODO' }";
 			Console.Write(v3);
-		}
-
-		public static string ConvertToV3(string json)
-		{
-			var jsonConverter = new JsonConverter();
-			var jObject = JObject.Parse(json);
-			var result = jsonConverter.ConvertJson(jObject);
-			return JsonConvert.SerializeObject(
-				result, 
-				Formatting.Indented, 
-				new JsonSerializerSettings
-				{
-					NullValueHandling = NullValueHandling.Ignore
-				});
-		}
-	}
-
-
-	public class JsonConverter
-	{
-		public JObject ConvertJson(JObject jObject)
-		{
-			return jObject;
-
 		}
 	}
 }
