@@ -1,0 +1,111 @@
+<html>
+<head>
+	<link rel="stylesheet" href="ui/bootstrap.min.css">	
+	<script src="ui/firebase.js"></script>	
+	<script src="ui/marked.min.js"></script>	
+	<script src="ui/mustache.min.js"></script>	
+	<script src="ui/plotly-latest.min.js"></script>
+</head>
+<body class="container">
+	
+	<h1>Текущее состояние</h1>
+	<div id="scoretable"></div>
+	<h1>Релизы</h1>
+	<div id="releasesPlot" style="width:100%;height:300px;"></div>
+	<h1>Формулировки заданий</h1>
+	<div id="statements" style="padding:50px"></div>
+	<script id="scoretable-template" type="text/template">
+		<table class="table table-condensed">
+			<tr>
+				<th>Name</th>
+				{{#tasks}}
+					<th>{{.}}</th>
+				{{/tasks}}
+			</tr>
+			{{#teams}}
+				<tr>
+					<th>{{name}}</th>
+					{{#tasks}}
+					<td>{{.}}</td>
+					{{/tasks}}
+				</tr>
+			{{/teams}}
+		</table>
+	</script>
+	<script>
+	function convertData(curState, tasks){
+		var teamNames = Object.keys(curState);
+		var teamsData = teamNames.map(function(n){ return{"name":n, tasks: tasks.map(t => curState[n].Tasks ? curState[n].Tasks[t.id] : "0")}});
+		return { tasks: tasks.map(t => t.id), teams: teamsData };
+	}
+	
+	function updateScoreboard(data){
+		var tmpl = document.getElementById("scoretable-template").innerHTML;
+		var rendered = Mustache.render(tmpl, data);
+		document.getElementById("scoretable").innerHTML = rendered;
+	}
+	
+	function updateStatements(tasks){
+		var statements = tasks.map(t => "## " + t.id + "\n\n" + t.md).join("\n\n");
+		document.getElementById("statements").innerHTML = marked(statements);
+	}
+	</script>
+
+		
+	<script>
+	var fb = new Firebase("https://design-camp.firebaseio.com/camp/");
+	fb.child("CurrentState").once("value", function(snapshot) {
+		var data = snapshot.val();
+		var teams = Object.keys(data);
+		fb.child("Tasks").once("value", function(snapshot) {
+			var tasks = snapshot.val();
+			updateScoreboard(convertData(data, tasks));
+			updateStatements(tasks);
+		});
+	});
+	
+	showPlot();
+
+	function showPlot(){
+		fb.child("Releases").once("value", function(snapshot) {
+			var data = snapshot.val();
+			var xx = Object.keys(data).sort();
+			if (xx.length <= 1) return;
+			var lastRelease = data[xx[xx.length-1]];
+			var teams = Object.keys(lastRelease);
+			var tracks = teams.map(
+				function getTrack(team){
+					var yy = xx.map(x => data[x][team].Score);
+					for(var i=1; i<yy.length; i++)
+						yy[i] = yy[i] + yy[i-1];
+					return {
+						x: xx.map((v,i) => i),
+						y: yy,
+						name: team,
+						type: 'scatter',
+						mode: 'lines',
+						line: {
+							width: 3
+						}
+					}
+			});
+			var plotDiv = document.getElementById('releasesPlot');
+			if (plotDiv.data){
+				plotDiv.data = tracks;
+				Plotly.redraw(plotDiv);
+			}
+			else{
+				var layout = {
+					margin: { t: 0 },
+					
+					font: {
+						size: 24,
+					},
+				};
+				Plotly.plot(plotDiv, tracks, layout );
+			}
+		})
+	}
+	</script>
+</body>
+</html>
