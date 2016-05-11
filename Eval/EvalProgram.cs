@@ -1,5 +1,4 @@
-﻿using checker.Eval.Solution;
-using System;
+﻿using System;
 
 namespace EvalTask
 {
