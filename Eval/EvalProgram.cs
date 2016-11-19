@@ -11,7 +11,7 @@ namespace EvalTask
 		{
            string input = Console.In.ReadToEnd();
 			string output = new DataTable().Compute(input, "").ToString();
-                  Console.WriteLine(output);
+               Console.WriteLine(output);
 		}
 	}
 }
