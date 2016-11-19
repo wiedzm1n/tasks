@@ -19,8 +19,7 @@ namespace SimQLTask
 		public void SumSingleItem()
 		{
 			var results = SimQLProgram.ExecuteQueries(
-				"{" +
-				"'data': [{'itemsCount':42}, {'foo':'bar'}], " +
+				"{ 'data': {'itemsCount':42, 'foo':'bar'}, " +
 				"'queries': ['sum(itemsCount)']}");
 			Assert.AreEqual(new[] { 42 }, results);
 		}

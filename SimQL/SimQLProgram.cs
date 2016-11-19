@@ -29,8 +29,35 @@ namespace SimQLTask
 			var jObject = JObject.Parse(json);
 			var data = (JObject)jObject["data"];
 			var queries = jObject["queries"].ToObject<string[]>();
-			// TODO
-			return queries.Select(q => "TODO");
+		    var result = 0;
+
+            var varp = data.Children();
+            Dictionary<String, int> dictr = new Dictionary<string, int>();
+           
+
+                foreach (var v in varp)
+                {
+                    v.Parent.Values<>()
+                }
+               
+            
+
+            for (int i = 0; i < queries.Length; i++)
+		    {
+		        if (queries[i].Contains("sum"))
+		        {
+		            var parames=queries[i].Replace("sum", "").Replace("(", "").Replace(")", "").Split(',');
+		            for (int j = 0; j < parames.Length; j++)
+		            {
+		               
+		                result += Int32.Parse(data[parames].ToString());
+		            }
+		        }
+		       
+		    }
+		    return null;
+
+		    //return queries.Select(q =>q);
 		}
 	}
 }
