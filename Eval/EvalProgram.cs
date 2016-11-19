@@ -9,9 +9,9 @@ namespace EvalTask
 
         static void Main(string[] args)
 		{
-           string input = Console.In.ReadToEnd();
-			string output = new DataTable().Compute(input, "").ToString();
-               Console.WriteLine(output);
-		}
+            string input = Console.In.ReadToEnd();
+            string output = new DataTable().Compute(input, "").ToString();
+            Console.WriteLine(output);
+        }
 	}
 }
