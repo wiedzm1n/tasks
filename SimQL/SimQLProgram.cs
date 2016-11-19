@@ -29,7 +29,7 @@ namespace SimQLTask
                 {
                     token = token[sub];
                 }
-                list.Add(element + " = " + token);
+                list.Add(element + " = " + token.ToString().Replace(",", "."));
             }
 
             return list;
