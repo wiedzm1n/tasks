@@ -13,7 +13,7 @@ namespace SimQLTask
         {
             //var json = Console.In.ReadToEnd();
             var json =
-                "{\"data\":{\"a\":{\"x\":3.14,\"b\":{\"c\":15},\"c\":{\"c\":9}},\"z\":42},\"queries\":[\"a.x\",\"a.b.c\",\"a.c.c\",\"z\"]}";
+                "{\"data\":{\"empty\":{},\"ab\":0,\"x1\":1,\"x2\":2,\"y1\":{\"y2\":{\"y3\":3}}},\"queries\":[\"ab\",\"x1\",\"x2\",\"y1.y2.y3\"]}";
             foreach (var result in ExecuteQueries(json))
                 Console.WriteLine(result);
         }
@@ -21,30 +21,26 @@ namespace SimQLTask
         public static IEnumerable<string> ExecuteQueries(string json)
         {
             var jObject = JObject.Parse(json);
-            var data = (JObject)jObject["data"];
-            var queries = jObject["queries"].ToObject < string[]>();
+            var data = (JObject) jObject["data"];
+            var queries = jObject["queries"].ToObject<string[]>();
             List<string> list = new List<string>();
             foreach (string element in queries)
             {
                 JToken token = jObject["data"];
                 string parsedElement = element.Replace("sum(", "").Replace(")", "");
-                try
+
+                foreach (string sub in parsedElement.Split('.'))
                 {
-                    foreach (string sub in parsedElement.Split('.'))
-                    {
+                    if (token!=null)
                         token = token[sub];
+                    else
+                    {
+                        token = "";
+                        break;
                     }
-//                if (token == null)
-//                {
-//                    token = "";
-//                }
-//                
-                    list.Add(element + " = " + token.ToString().Replace(",", "."));
                 }
-                catch
-                {
-                    
-                }
+                if (token != null)
+                list.Add(element + " = " + token.ToString().Replace(",", "."));
             }
 
             return list;
