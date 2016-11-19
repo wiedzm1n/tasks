@@ -11,7 +11,15 @@ namespace SimQLTask
 	{
 		static void Main(string[] args)
 		{
-			var json = Console.In.ReadToEnd();
+		    bool RELEASE = false;
+		    string json;
+            if (RELEASE)
+			 json = Console.In.ReadToEnd();
+            else
+            {
+                json =
+                    "{\"data\":{\"a\":{\"x\":3.14,\"b\":{\"c\":15},\"c\":{\"c\":9}},\"z\":42},\"queries\":[\"data.a.x\",\"data.a.b.c\",\"data.a.c.c\",\"data.z\"]}";
+            }
 			foreach (var result in ExecuteQueries(json))
 				Console.WriteLine(result);
 		}
