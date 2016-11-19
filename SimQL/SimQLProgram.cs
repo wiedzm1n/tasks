@@ -13,7 +13,7 @@ namespace SimQLTask
         {
             var json = Console.In.ReadToEnd();
             //var json =
-            //    "{\"data\":{\"empty\":{},\"ab\":0,\"x1\":1,\"x2\":2,\"y1\":{\"y2\":{\"y3\":3}}},\"queries\":[\"abc\",\"x1\",\"x2\",\"y1.y2.y3\"]}";
+            //    "{\"data\":{\"empty\":{},\"ab\":0,\"x1\":1,\"x2\":2,\"y1\":{\"y2\":{\"y3\":3}}},\"queries\":[\"empty\",\"xyz\",\"x1.x2\",\"y1.y2.z\",\"empty.foobar\"]}";
             foreach (var result in ExecuteQueries(json))
                 Console.WriteLine(result);
         }
@@ -29,18 +29,20 @@ namespace SimQLTask
                 JToken token = jObject["data"];
                 string parsedElement = element.Replace("sum(", "").Replace(")", "");
 
+                bool success = true;
                 foreach (string sub in parsedElement.Split('.'))
                 {
-                    if (token != null)
+                    if (token != null && token.Contains(sub))
                     {
                         token = token[sub];
                     }
                     else
                     {
+                        success = false;
                         break;
                     }
                 }
-                if (token != null)
+                if (success)
                     list.Add(element + " = " + token.ToString().Replace(",", "."));
                 else
                     list.Add(element + " = ");
