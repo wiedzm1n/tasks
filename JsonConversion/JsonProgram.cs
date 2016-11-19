@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using Newtonsoft.Json;
+using NUnit.Framework;
 
 namespace JsonConversion
 {
@@ -69,13 +70,13 @@ namespace JsonConversion
 
         static void Main()
         {
-            bool RELEASE = true;
+            bool RELEASE = false;
             string json;
             if (RELEASE)
                 json = Console.In.ReadToEnd();
             else
                 json =
-                    "{\"version\":\"2\",\"products\":{\"642572671\":{\"name\":\"\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\",\"price\":26755360,\"count\":2147483647},\"462028247\":{\"name\":\"\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\",\"price\":1812829817,\"count\":1583821338},\"1064089862\":{\"name\":\"jtXpDL4AA\",\"price\":1,\"count\":1765575149},\"441937189\":{\"name\":\"LPAI\",\"price\":2119059550,\"count\":260983550},\"1493811026\":{\"name\":\"M\",\"price\":1208992471,\"count\":1},\"1\":{\"name\":\"\",\"price\":1,\"count\":1},\"1031623038\":{\"name\":\"XuNL\",\"price\":188661436,\"count\":0},\"0\":{\"name\":\"Vz\",\"price\":2147483647,\"count\":1}}}";
+                    "{\"version\":\"2\",\"constants\":{\"pi\":3.14},\"products\":{\"1\":{\"name\":\"product-name\",\"price\":\"12.3 * pi + pi + 4\",\"count\":100}}}";
             string s = Convert(json);
             if (RELEASE)
                 Console.Write(s);
@@ -83,7 +84,7 @@ namespace JsonConversion
                 File.WriteAllText("out.json", s);
         }
 
-        static string Convert(string s)
+        public static string Convert(string s)
         {
             Version2 v2 = JsonConvert.DeserializeObject<Version2>(s);
             List<NewItem> items = new List<NewItem>();
@@ -99,4 +100,5 @@ namespace JsonConversion
             return res;
         }
     }
+
 }
