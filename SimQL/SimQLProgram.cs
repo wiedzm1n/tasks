@@ -11,9 +11,9 @@ namespace SimQLTask
     {
         static void Main(string[] args)
         {
-            //var json = Console.In.ReadToEnd();
-            var json =
-                "{\"data\":{\"empty\":{},\"ab\":0,\"x1\":1,\"x2\":2,\"y1\":{\"y2\":{\"y3\":3}}},\"queries\":[\"ab\",\"x1\",\"x2\",\"y1.y2.y3\"]}";
+            var json = Console.In.ReadToEnd();
+            //var json =
+            //    "{\"data\":{\"empty\":{},\"ab\":0,\"x1\":1,\"x2\":2,\"y1\":{\"y2\":{\"y3\":3}}},\"queries\":[\"abc\",\"x1\",\"x2\",\"y1.y2.y3\"]}";
             foreach (var result in ExecuteQueries(json))
                 Console.WriteLine(result);
         }
@@ -31,16 +31,19 @@ namespace SimQLTask
 
                 foreach (string sub in parsedElement.Split('.'))
                 {
-                    if (token!=null)
+                    if (token != null)
+                    {
                         token = token[sub];
+                    }
                     else
                     {
-                        token = "";
                         break;
                     }
                 }
                 if (token != null)
-                list.Add(element + " = " + token.ToString().Replace(",", "."));
+                    list.Add(element + " = " + token.ToString().Replace(",", "."));
+                else
+                    list.Add(element + " = ");
             }
 
             return list;
