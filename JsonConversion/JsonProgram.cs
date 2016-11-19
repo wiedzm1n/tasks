@@ -70,7 +70,7 @@ namespace JsonConversion
 
         static void Main()
         {
-            bool RELEASE = false;
+            bool RELEASE = true;
             string json;
             if (RELEASE)
                 json = Console.In.ReadToEnd();
