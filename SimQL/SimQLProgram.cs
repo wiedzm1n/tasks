@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -14,7 +13,7 @@ namespace SimQLTask
         {
             //var json = Console.In.ReadToEnd();
             var json =
-                "{\"data\":{\"a\":{\"x\":3.14,\"b\":{\"c\":15},\"c\":{\"c\":9}},\"z\":42},\"queries\":[\"a.x\",\"a.b.c\",\"a.c.c\",\"z\"]}";
+                "{\"data\":{\"empty\":{},\"ab\":0,\"x1\":1,\"x2\":2,\"y1\":{\"y2\":{\"y3\":3}}},\"queries\":[\"empty\",\"xyz\",\"x1\",\"y1.y2.z\",\"empty.foobar\"]}";
             foreach (var result in ExecuteQueries(json))
                 Console.WriteLine(result);
         }
@@ -44,52 +43,12 @@ namespace SimQLTask
                     }
                 }
                 if (success)
-                list.Add(element + " = " + token.ToString().Replace(",", "."));
+                    list.Add(element + " = " + token.ToString().Replace(",", "."));
                 else
-                list.Add(element + " = ");
+                    list.Add(element + " = ");
             }
 
             return list;
         }
     }
 }
-=======
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-
-namespace SimQLTask
-{
-	class SimQLProgram
-	{
-		static void Main(string[] args)
-		{
-			var json = Console.In.ReadToEnd();
-			foreach (var result in ExecuteQueries(json))
-				Console.WriteLine(result);
-		}
-
-		public static IEnumerable<string> ExecuteQueries(string json)
-		{
-			var jObject = JObject.Parse(json);
-			var data = (JObject)jObject["data"];
-			var queries = jObject["queries"].ToObject<string[]>();
-            List<string> list = new List<string>();
-            foreach (string element in queries)
-            {
-                JToken token = jObject["data"];
-                foreach(string sub in element.Split('.'))
-                {
-                    token = token[sub];
-                }
-
-                list.Add(element + " = " + token);
-            }
-            return list;
-		}
-	}
-}
->>>>>>> d3feb3c440e96fb31802c04feb9a616e10328ad5
