@@ -11,9 +11,9 @@ namespace SimQLTask
     {
         static void Main(string[] args)
         {
-            var json = Console.In.ReadToEnd();
-            //var json =
-            //    "{\"data\":{\"empty\":{},\"ab\":0,\"x1\":1,\"x2\":2,\"y1\":{\"y2\":{\"y3\":3}}},\"queries\":[\"empty\",\"xyz\",\"x1.x2\",\"y1.y2.z\",\"empty.foobar\"]}";
+            //var json = Console.In.ReadToEnd();
+            var json =
+                "{\"data\":{\"empty\":{},\"ab\":0,\"x1\":1,\"x2\":2,\"y1\":{\"y2\":{\"y3\":3}}},\"queries\":[\"empty\",\"xyz\",\"x1.x2\",\"y1.y2.z\",\"empty.foobar\"]}";
             foreach (var result in ExecuteQueries(json))
                 Console.WriteLine(result);
         }
@@ -32,7 +32,7 @@ namespace SimQLTask
                 bool success = true;
                 foreach (string sub in parsedElement.Split('.'))
                 {
-                    if (token != null && token.Contains(sub))
+                    if (token != null && token.ToString().Contains(sub))
                     {
                         token = token[sub];
                     }
@@ -43,9 +43,9 @@ namespace SimQLTask
                     }
                 }
                 if (success)
-                    list.Add(element + " = " + token.ToString().Replace(",", "."));
+                list.Add(element + " = " + token.ToString().Replace(",", "."));
                 else
-                    list.Add(element + " = ");
+                list.Add(element + " = ");
             }
 
             return list;
