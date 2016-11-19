@@ -53,12 +53,12 @@ namespace JsonConversion
         public class Version3
         {
             public string version;
-            public List<NewItem> items;
+            public List<NewItem> products;
 
-            public Version3(string version, List<NewItem> items)
+            public Version3(string version, List<NewItem> products)
             {
                 this.version = version;
-                this.items = items;
+                this.products = products;
             }
 
             public Version3(string version)
@@ -80,7 +80,7 @@ namespace JsonConversion
             if (RELEASE)
                 Console.Write(s);
             else
-                File.WriteAllText("out.txt", s);
+                File.WriteAllText("out.json", s);
         }
 
         static string Convert(string s)
@@ -95,6 +95,7 @@ namespace JsonConversion
 
             string res = JsonConvert.SerializeObject(v3, Formatting.Indented);
             res = res.Replace(".0,", ",");
+            res = res.Replace("  ", "    ");
             return res;
         }
     }
