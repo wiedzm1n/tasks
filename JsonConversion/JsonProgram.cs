@@ -42,6 +42,7 @@ namespace JsonConversion
         public class Version2
         {
             public string version;
+            public Dictionary<string, int> constants;
             public Dictionary<int, Item> products;
 
             public Version2(string version, Dictionary<int, Item> products)

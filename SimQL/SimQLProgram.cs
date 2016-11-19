@@ -11,7 +11,9 @@ namespace SimQLTask
     {
         static void Main(string[] args)
         {
-            var json = Console.In.ReadToEnd();
+            //var json = Console.In.ReadToEnd();
+            var json = "{ 'data': {'itemsCount':42, 'foo':'bar'}, " +
+                   "'queries': ['sum(itemsCount)']}";
             foreach (var result in ExecuteQueries(json))
                 Console.WriteLine(result);
         }
@@ -25,7 +27,8 @@ namespace SimQLTask
             foreach (string element in queries)
             {
                 JToken token = jObject["data"];
-                foreach (string sub in element.Split('.'))
+                string parsedElement = element.Replace("sum(", "").Replace(")", "");
+                foreach (string sub in parsedElement.Split('.'))
                 {
                     token = token[sub];
                 }
